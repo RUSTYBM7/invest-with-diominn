@@ -54,4 +54,62 @@ app.post("/webhooks", async (req, res) => {
   res.send("OK");
 });
 
-app.listen(3000, "0.0.0.0", () => console.log("Server running on port 3000 ✅"));
+app.get("/leads", async (_, res) => {
+  try {
+    const resp = await fetch(`${SUPABASE_URL}/rest/v1/leads?select=*`, {
+      headers: {
+        apikey: SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`
+      }
+    });
+    const data = await resp.json();
+
+    const html = `
+      <html>
+        <head>
+          <title>Leads Dashboard</title>
+          <style>
+            body { font-family: Inter, sans-serif; background:#f6f8fa; color:#333; padding:20px; }
+            h1 { color:#0ea76a; }
+            table { width:100%; border-collapse:collapse; margin-top:20px; }
+            th,td { padding:10px; border-bottom:1px solid #ddd; text-align:left; }
+            th { background:#111; color:#fff; }
+            tr:hover { background:#f1f1f1; }
+          </style>
+        </head>
+        <body>
+          <h1>Leads Dashboard</h1>
+          <table>
+            <tr>
+              <th>Email</th>
+              <th>First Name</th>
+              <th>Event</th>
+              <th>Source</th>
+              <th>Created</th>
+            </tr>
+            ${data
+              .map(
+                (x) => `
+                  <tr>
+                    <td>${x.email || "-"}</td>
+                    <td>${x.firstname || "-"}</td>
+                    <td>${x.event || "-"}</td>
+                    <td>${x.source || "-"}</td>
+                    <td>${new Date(x.created_at).toLocaleString()}</td>
+                  </tr>`
+              )
+              .join("")}
+          </table>
+        </body>
+      </html>
+    `;
+
+    res.setHeader("Content-Type", "text/html");
+    res.send(html);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error loading leads");
+  }
+});
+
+app.listen(5000, "0.0.0.0", () => console.log("Server running on port 5000 ✅"));
