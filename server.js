@@ -1,10 +1,11 @@
 import express from "express";
 import fetch from "node-fetch";
+import axios from "axios";
 
 const app = express();
 app.use(express.json());
 
-const { SUPABASE_URL, SUPABASE_SERVICE_KEY, HUBSPOT_ACCESS_TOKEN } = process.env;
+const { SUPABASE_URL, SUPABASE_SERVICE_KEY, HUBSPOT_ACCESS_TOKEN, MAILCHIMP_API_KEY, MAILCHIMP_SERVER_PREFIX, MAILCHIMP_AUDIENCE_ID } = process.env;
 
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -18,6 +19,33 @@ async function withRetry(fn, retries = 3, delayMs = 800) {
     }
   }
   console.error("❌ All retries failed");
+}
+
+async function addToMailchimp(email, firstname) {
+  if (!MAILCHIMP_API_KEY || !MAILCHIMP_SERVER_PREFIX || !MAILCHIMP_AUDIENCE_ID) {
+    console.log("⚠️ Mailchimp credentials not configured, skipping Mailchimp sync");
+    return;
+  }
+
+  const url = `https://${MAILCHIMP_SERVER_PREFIX}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/members`;
+  const auth = {
+    username: "anystring",
+    password: MAILCHIMP_API_KEY
+  };
+  const payload = {
+    email_address: email,
+    status: "subscribed",
+    merge_fields: {
+      FNAME: firstname || ""
+    }
+  };
+
+  try {
+    const res = await axios.post(url, payload, { auth });
+    console.log(`✅ Added to Mailchimp: ${res.data.email_address}`);
+  } catch (err) {
+    console.error("❌ Mailchimp error:", err.response?.data || err.message);
+  }
 }
 
 app.get("/", (_, res) => res.send("✅ Webhook server is live."));
@@ -49,6 +77,8 @@ app.post("/webhooks", async (req, res) => {
       });
       if (!resp.ok) throw new Error("Supabase insert failed");
     });
+
+    await addToMailchimp(email, firstname);
   }
 
   res.send("OK");
