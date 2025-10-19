@@ -1,0 +1,52 @@
+SteerCode Connection Info
+=====================================
+
+Project name: Invest With Diomin Platform
+
+Mailchimp Integration
+----------------------
+MAILCHIMP_API_KEY=38f371f39bf8ea36955e766cf4774077-us5
+MAILCHIMP_SERVER_PREFIX=us5
+MAILCHIMP_AUDIENCE_ID=5bb1893f5c
+
+Supabase Integration
+----------------------
+SUPABASE_URL=https://rcxggxntuyrdumtuqqsr.supabase.co
+SUPABASE_SERVICE_ROLE=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjeGdneG50dXlyZHVtdHVxcXNyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MDU3MjQ1NSwiZXhwIjoyMDc2MTQ4NDU1fQ._WIrnaeuuJG1-K2YE0kFrDXUhph8xzvYgH-kUlgTS3E
+SUPABASE_TABLE=leads
+
+Webhook URLs
+----------------------
+HubSpot → Supabase: https://hubspot-supabase-webhook.rustybm1.repl.co/webhooks
+Mailchimp Sync Health: https://mailchimp-sync.rustybm1.repl.co/
+Leads Dashboard: https://hubspot-supabase-webhook.rustybm1.repl.co/leads
+
+Framework
+----------------------
+Frontend: Next.js + Tailwind (hosted on Vercel)
+Backend automations: Replit Node.js (Express)
+CMS / DB: Supabase (RLS enabled)
+Email: Mailchimp automation (Journey builder)
+Analytics: GA4 + Meta Pixel
+
+Automation Summary
+----------------------
+- HubSpot form submissions trigger → webhook → Supabase → Mailchimp.
+- Mailchimp sends two-step email sequence (immediate & next-day).
+- Supabase stores all leads (email, firstname, source, event, created_at).
+- Replit servers handle health checks, retry logic, and cron jobs for newsletters.
+
+Optional API Endpoints
+----------------------
+GET  /api/v1/leads
+POST /api/v1/webhooks
+POST /api/v1/mailchimp/sync
+GET  /api/v1/health
+
+Notes for SteerCode
+----------------------
+- Each main page section (Home, About, Advisory, Real Estate, Fintech, Insights, Contact) must exceed 1 000 characters of dynamic content.
+- Add sub-pages under /real-estate, /insights, /fintech/docs.
+- Embed flyers and futurist automation previews on Home.
+- Integrate existing automations (HubSpot + Supabase + Mailchimp).
+- Optimize for SEO + A11y (WCAG 2.2 AA).
