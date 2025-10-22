@@ -17,12 +17,20 @@
     "jsx": "preserve",
     "types": [
       "node"
+    ],
+    "incremental": true,
+    "esModuleInterop": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
     ]
   },
   "include": [
     "next-env.d.ts",
     "src/**/*",
-    "next.config.mjs"
+    "next.config.mjs",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
