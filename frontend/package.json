@@ -1,0 +1,31 @@
+{
+  "name": "invest-with-diomin",
+  "private": true,
+  "scripts": {
+    "dev": "PORT=${PORT:-3000} next dev -p $PORT",
+    "build": "next build",
+    "start": "next start -p ${PORT:-3000}",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.5",
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "openai": "^4.55.0",
+    "zod": "^3.23.8",
+    "ua-parser-js": "^1.0.37",
+    "date-fns": "^3.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.67",
+    "@types/react-dom": "^18.2.22",
+    "autoprefixer": "^10.4.18",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.5",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.10",
+    "typescript": "^5.4.5"
+  }
+}
