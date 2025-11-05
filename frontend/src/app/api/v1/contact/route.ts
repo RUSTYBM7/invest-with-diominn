@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { supabaseServer } from "@/src/lib/supabaseServer";
-import { subscribeToMailchimp } from "@/src/lib/mailchimp";
+import { supabaseServer } from "@/lib/supabaseServer";
+import { subscribeToMailchimp } from "@/lib/mailchimp";
 
 export async function POST(req: Request) {
   try {
